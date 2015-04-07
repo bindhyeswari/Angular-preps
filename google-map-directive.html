@@ -13,22 +13,7 @@
         }
     </style>
     <script>
-        function test() {
-            console.log(google);
 
-            var myLatlng = new google.maps.LatLng(37.3761862,-122.03071970000002);
-            var mapOptions = {
-                zoom: 18,
-                center: myLatlng
-            };
-            var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-            var marker = new google.maps.Marker({
-                position: myLatlng,
-                map: map,
-                title: 'Hello World!'
-            });
-        }
         angular.module('myApp', ['myApp.services']).directive('googleMap', function () {
             return {
                 scope: {
@@ -37,6 +22,7 @@
                 compile: function (element) {
                     var script = document.createElement('script');
                     document.head.appendChild(script);
+                    test.bind(window, element);
                     script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=test';
 
                     return {
@@ -44,6 +30,9 @@
                         post: function (scope, element) {
                             element.on('click', function () {
                                 console.log(scope.cities[0]);
+                                // loop over all the cities
+                                // create a LatLng object for each city by using the google.maps.LatLng constructor
+                                // create a new marker and put it on the map
                             });
                         }
                     }
