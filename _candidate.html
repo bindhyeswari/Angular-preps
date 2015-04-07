@@ -1,0 +1,19 @@
+<style>
+    div.candidate {
+        float: left;
+        border: 1px solid gray;
+
+        height: 400px;
+        width: 200px;
+    }
+</style>
+<div class="candidate">
+    <div ng-hide="flipped" class="front">
+        <img src="" alt="Image for the user"/>
+        <h3>Title</h3>
+        <div>Experience</div>
+    </div>
+    <div ng-show="flipped" class="back">
+        Information on the back of the page ..
+    </div>
+</div>

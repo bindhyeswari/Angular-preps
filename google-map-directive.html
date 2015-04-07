@@ -3,50 +3,82 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="cities-service.js"></script>
     <style>
-        div {
-            height: 50vh;
-            width: 50vw;
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        div#map-canvas {
+            width: 500px;
+            height: 200px;
             border: 1px solid gray;
         }
     </style>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="cities-service.js"></script>
     <script>
 
-        angular.module('myApp', ['myApp.services']).directive('googleMap', function () {
+
+
+        angular.module('myApp', ['myApp.services']).controller('MyController', function ($scope) {
+            $scope.message = 'Hello';
+        }).directive('googleMap', function ($q) {
             return {
                 scope: {
                     cities: '='
                 },
-                compile: function (element) {
-                    var script = document.createElement('script');
-                    document.head.appendChild(script);
-                    test.bind(window, element);
-                    script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=test';
+                compile: function () {
+
+                    var map; var deferred = $q.defer();
+                    window.test = function test () {
+                        var myLatlng = new google.maps.LatLng(37.3761862,-122.03071970000002);
+                        var mapOptions = {
+                            zoom: 18,
+                            center: myLatlng
+                        };
+                        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+                        var marker = new google.maps.Marker({
+                            position: myLatlng,
+                            map: map,
+                            title: 'Hello World!'
+                        });
+                        console.log('Hi');
+                        deferred.resolve();
+                    };
 
                     return {
-                        pre: function () {},
-                        post: function (scope, element) {
-                            element.on('click', function () {
-                                console.log(scope.cities[0]);
-                                // loop over all the cities
-                                // create a LatLng object for each city by using the google.maps.LatLng constructor
-                                // create a new marker and put it on the map
+                        pre: function (scope, element, attrs) {
+                            var script = document.createElement('script');
+                            script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=test';
+                            document.head.appendChild(script);
+                        },
+                        post: function (scope, element, attrs) {
+                            var sc = scope;
+                            deferred.promise.then(function () {
+
                             });
+
+                            function printMarkers = function () {
+                                var marker = new google.maps.Marker({
+                                    position: myLatlng,
+                                    map: map,
+                                    title: 'Hello World!'
+                                });
+                            }
                         }
                     }
                 }
-            }
+            };
         }).controller('MyController', function ($scope, City) {
-            $scope.cities = City.getAll();
+            $scope.cities = City.getAll(); // will need to be moved to a promise later
         });
     </script>
 </head>
-<body ng-controller="MyController">
-    <ul>
-        <li ng-repeat="city in cities">{{city.city}}</li>
-    </ul>
-    <div google-map id="map-canvas" cities="cities"></div>
+<body>
+    <div ng-controller="MyController">
+        <div google-map id="map-canvas" cities="cities"></div>
+    </div>
 </body>
 </html>
