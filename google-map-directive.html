@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="cities-service.js"></script>
+    <style>
+        div {
+            height: 50vh;
+            width: 50vw;
+            border: 1px solid gray;
+        }
+    </style>
+    <script>
+        function test() {
+            console.log(google);
+
+            var myLatlng = new google.maps.LatLng(37.3761862,-122.03071970000002);
+            var mapOptions = {
+                zoom: 18,
+                center: myLatlng
+            };
+            var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                title: 'Hello World!'
+            });
+        }
+        angular.module('myApp', ['myApp.services']).directive('googleMap', function () {
+            return {
+                scope: {
+                    cities: '='
+                },
+                compile: function (element) {
+                    var script = document.createElement('script');
+                    document.head.appendChild(script);
+                    script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=test';
+
+                    return {
+                        pre: function () {},
+                        post: function (scope, element) {
+                            element.on('click', function () {
+                                console.log(scope.cities[0]);
+                            });
+                        }
+                    }
+                }
+            }
+        }).controller('MyController', function ($scope, City) {
+            $scope.cities = City.getAll();
+        });
+    </script>
+</head>
+<body ng-controller="MyController">
+    <ul>
+        <li ng-repeat="city in cities">{{city.city}}</li>
+    </ul>
+    <div google-map id="map-canvas" cities="cities"></div>
+</body>
+</html>

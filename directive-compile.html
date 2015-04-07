@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script>
+        angular.module('myApp', []).controller('MyController', function ($scope) {
+            $scope.message = 'Hello';
+        }).directive('printHelloWorld', function () {
+            return {
+                compile: function () {
+                    return {
+                        pre: function () {},
+                        post: function (scope, element, attrs) {
+                            element[0].addEventListener('click', function () {
+                                console.log('Hello World!');
+                            });
+                        }
+                    }
+                }
+            };
+        });
+    </script>
+</head>
+<body>
+    <div ng-controller="MyController">
+        <div print-hello-world></div>
+    </div>
+</body>
+</html>

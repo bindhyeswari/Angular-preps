@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script>
+        angular.module('myApp', []).run(function ($rootScope) {
+            $rootScope.message = 'Hello from the $rootScope';
+        }).controller('MyController', function ($scope) {
+            // $scope.message = 'Hello from MyControlller scope ... ';
+        }).directive('test', function () {
+            return {
+                template: '{{message}}',
+                scope: {
+                    val: '@',
+                    message: '='
+                },
+                link: function (scope, element, attrs) {
+                    element.on('click', function () {
+                        console.log('The value of the directive is: ' + scope.val);
+                        scope.$apply(function () {
+                            scope.message = 'new message ... ';
+                            scope.val++;
+                        });
+                    });
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+
+{{message}}
+
+<div ng-controller="MyController">
+
+    <input type="text" ng-model="message"/>
+    <input type="text" ng-model="val"/>
+
+    <div test message="message" val="100"></div>
+
+</div>
+</body>
+</html>
