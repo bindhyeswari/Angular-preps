@@ -1,0 +1,1 @@
+angular.module('myApp', ['googleMap.directives', 'googleMap.controllers']);

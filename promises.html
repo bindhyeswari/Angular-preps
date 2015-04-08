@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<input type="file" multiple/>
+<img src="" alt=""/>
+<script>
+
+    document.querySelector('input').addEventListener('change', function () {
+        var results = [];
+
+        var files = Array.prototype.slice.call(this.files);
+        files.forEach(readFile);
+
+        function readFile(file) {
+            var filereader = new FileReader();
+            // loadend
+            filereader.addEventListener('loadend', function () {
+                results.push(filereader.result);
+                console.log(results);
+            });
+            filereader.readAsDataURL(file);
+        }
+    });
+
+
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+
+    function randomPrint(counter) {
+        return new Promise(function (resolve, reject) {
+            var randomInterval = Math.floor(Math.random() * 1000);
+            setTimeout(function () {
+                console.log(counter + ', interval: ' + randomInterval);
+                resolve(randomInterval);
+            }, randomInterval);
+        });
+    }
+
+    var p = randomPrint(1);
+
+    var promises = [];
+    for (var i = 0; i < 10; i++) {
+        promises.push(randomPrint(i));
+    }
+
+    Promise.all(promises).then(function (data) {
+        // do something after all the operations have completed ...
+        console.log(data);
+    });
+
+
+
+
+
+
+</script>
+</body>
+</html>
